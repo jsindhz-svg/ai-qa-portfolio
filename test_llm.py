@@ -6,8 +6,12 @@ from deepeval.models import OllamaModel
 print("1. Connecting to local Ollama model (llama3.2)...")
 
 try:
-    # Native DeepEval Ollama integration
-    local_llm = OllamaModel(model="llama3.2", base_url="http://localhost:11434")
+    # Set timeout to 120 seconds to give local hardware time to evaluate
+    local_llm = OllamaModel(
+        model="llama3.2", 
+        base_url="http://localhost:11434",
+        timeout=120
+    )
 
     # 1. Define test case inputs
     test_case = LLMTestCase(
@@ -18,7 +22,7 @@ try:
     # 2. Set up metric using local Ollama evaluator
     relevancy_metric = AnswerRelevancyMetric(threshold=0.7, model=local_llm)
 
-    print("2. Running evaluation... (giving Ollama ~10 seconds to score)")
+    print("2. Running evaluation... (processing locally)")
     relevancy_metric.measure(test_case)
 
     print("\n--- EVALUATION RESULTS ---")
